@@ -26,30 +26,30 @@ public class Main {
             int row = map[i][0];
             int col = map[0][i];
 
-            int rowHappy = 0;
-            int colHappy = 0;
+            int rowHappy = 1;
+            int colHappy = 1;
 
             for (int j = 1; j < n; j++) {
                 if (map[i][j] == row) {
                     rowHappy++;
                 } else {
                     row = map[i][j];
-                    rowHappy = 0;
+                    rowHappy = 1;
                 }
 
                 if (map[j][i] == col) {
                     colHappy++;
                 } else {
                     col = map[j][i];
-                    colHappy = 0;
+                    colHappy = 1;
                 }
             }
 
-            if (rowHappy => m) {
+            if (rowHappy >= m) {
                 totalHappy++;
             }
 
-            if (colHappy => m) {
+            if (colHappy >= m) {
                 totalHappy++;
             }
         }
