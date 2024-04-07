@@ -29,6 +29,9 @@ public class Main {
             int rowHappy = 1;
             int colHappy = 1;
 
+            boolean isRowHappy = false;
+            boolean isColHappy = false;
+
             for (int j = 1; j < n; j++) {
                 if (map[i][j] == row) {
                     rowHappy++;
@@ -43,15 +46,21 @@ public class Main {
                     col = map[j][i];
                     colHappy = 1;
                 }
+
+                if (rowHappy >= m) {
+                    isRowHappy = true;
+                }
+
+                if (colHappy >= m) {
+                    isColHappy = true;
+                }
             }
 
-            if (rowHappy >= m) {
+            if (isRowHappy)
                 totalHappy++;
-            }
 
-            if (colHappy >= m) {
+            if (isColHappy)
                 totalHappy++;
-            }
         }
 
         System.out.println(totalHappy);
