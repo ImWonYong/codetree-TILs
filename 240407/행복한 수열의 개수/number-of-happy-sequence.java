@@ -26,13 +26,13 @@ public class Main {
             int row = map[i][0];
             int col = map[0][i];
 
-            int rowHappy = 1;
-            int colHappy = 1;
+            int rowHappy = 0;
+            int colHappy = 0;
 
             boolean isRowHappy = false;
             boolean isColHappy = false;
 
-            for (int j = 1; j < n; j++) {
+            for (int j = 0; j < n; j++) {
                 if (map[i][j] == row) {
                     rowHappy++;
                 } else {
