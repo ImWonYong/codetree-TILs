@@ -67,10 +67,11 @@ public class Main {
             int w = trimino[0].length;
             int h = trimino.length;
             int sum = 0;
-            if (r + h < n && c + w < m) {
-                for (int i = r; i < r + h; i++) {
-                    for (int j = c; j < c + w; j++) {
-                        sum += map[i][j];
+            if (r + h  - 1 < n && c + w - 1 < m) {
+                for (int i = 0; i < h; i++) {
+                    for (int j = 0; j < w; j++) {
+                        if (trimino[i][j] == 1)
+                            sum += map[r + i][c + j];
                     }
                 }
 
