@@ -24,7 +24,7 @@ public class Main {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 for (int k = i; k < n; k++) {
-                    for (int l = j; l < n; l++) {
+                    for (int l = j; l < m; l++) {
                         if (isPositiveSquare(i, j, k, l))
                             maxSquare = Math.max(maxSquare, getSize(i, j, k, l)); 
                     }
