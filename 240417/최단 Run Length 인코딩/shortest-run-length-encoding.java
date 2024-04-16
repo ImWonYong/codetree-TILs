@@ -7,7 +7,7 @@ public class Main {
 
         String A = sc.next();
 
-        int min = 11;
+        int min = 100;
         for (int i = 0; i < A.length(); i++) {
             String a = A.substring(A.length() - 1);
             String b = A.substring(0, A.length() - 1);
@@ -39,7 +39,7 @@ public class Main {
                 break;
             }
         }
-
+        
         return encode.length();
     }
 }
