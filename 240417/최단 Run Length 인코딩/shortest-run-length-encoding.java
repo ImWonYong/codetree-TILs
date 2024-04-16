@@ -23,14 +23,11 @@ public class Main {
     public static int runLengthEncoding(String A) {
         String encode = "";
         for (int i = 0; i < A.length();) {
-            int count = 1;
             int j;
             for (j = i + 1; j < A.length(); j++) {
-                if (A.charAt(i) == A.charAt(j)) {
-                    count++;
-                } else {
+                if (A.charAt(i) != A.charAt(j)) {
                     encode += A.charAt(i);
-                    encode += count;
+                    encode += (j - i);
                     i = j;
                     break;
                 }
@@ -38,7 +35,7 @@ public class Main {
 
             if (i < j) {
                 encode += A.charAt(i);
-                encode += count;
+                encode += (j - i);
                 break;
             }
         }
