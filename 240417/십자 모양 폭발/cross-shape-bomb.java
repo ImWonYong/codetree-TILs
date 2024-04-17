@@ -22,7 +22,7 @@ public class Main {
         int r = sc.nextInt() - 1;
         int c = sc.nextInt() - 1;
 
-        checkExplode(r, c);
+        checkExplode(r, c);     
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -62,11 +62,16 @@ public class Main {
 
         checked[r][c] = true;
         for (int i = 0; i < 4; i++) {
+            int tempR = r;
+            int tempC = c;
             for (int j = 0; j < length; j++) {
-                int nr = r + dx[i];
-                int nc = c + dy[i];
-                if (nr >= 0 && nr < n && nc >= 0 && nc < n)
+                int nr = tempR + dx[i];
+                int nc = tempC + dy[i];
+                if (nr >= 0 && nr < n && nc >= 0 && nc < n) {
                     checked[nr][nc] = true;
+                    tempR = nr;
+                    tempC = nc;
+                }
             }
         }
     }
