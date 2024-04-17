@@ -17,7 +17,7 @@ public class Main {
 
         length = length - count;
 
-        int[] temp = new int[length];
+        int[] temp = new int[N];
         int tempIdx = 0;
 
         for (int i = 0; i < length; i++) {
@@ -26,7 +26,9 @@ public class Main {
             }
         }
 
-        arr = temp;
+        for (int i = 0; i < N; i++) {
+            arr[i] = temp[i];
+        }
     }
 
     public static List<int[]> checkBombRange() {
