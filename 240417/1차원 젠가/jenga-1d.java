@@ -29,20 +29,13 @@ public class Main {
     }
 
     public static int removeBlock(int[] arr, int length,  int s, int e) {
-        int[] temp = new int[arr.length];
+        
+        int cutLength = e - s + 1;
 
-        int tempIndex = 0;
-
-        for (int i = 0; i < length; i++) {
-            if (i >= s && i <= e)
-                continue;
-            temp[tempIndex++] = arr[i]; 
+        for (int i = e + 1; i < length; i++) {
+            arr[i - cutLength] = arr[i];
         }
 
-        for (int i = 0; i < temp.length; i++) {
-            arr[i] = temp[i];
-        }
-
-        return tempIndex;
+        return length - cutLength;
     }
 }
