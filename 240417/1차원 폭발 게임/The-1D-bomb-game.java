@@ -7,23 +7,23 @@ public class Main {
     public static int length;
 
     public static void removeBlock(List<int[]> list) {
+
         int count = 0;
+
         for (int[] range: list) {
-            for (int i = range[0]; i <= range[1]; i++) {
+            for (int i = range[0]; i < range[0] + range[1]; i++) {
                 arr[i] = 0;
                 count++;
             }
         }
 
-        length = length - count;
+        length -= count;
 
         int[] temp = new int[N];
         int tempIdx = 0;
-
-        for (int i = 0; i < length; i++) {
-            if (arr[i] != 0) {
+        for (int i = 0; i < N; i++) {
+            if (arr[i] != 0)
                 temp[tempIdx++] = arr[i];
-            }
         }
 
         for (int i = 0; i < N; i++) {
@@ -33,25 +33,26 @@ public class Main {
 
     public static List<int[]> checkBombRange() {
         List<int[]> list = new ArrayList<>();
-    
-        int startIdx = 0;
+        if (length == 0) return list;
+
+        int idx = 0;
         int count = 1;
+
         for (int i = 1; i < length; i++) {
-            if (arr[startIdx] == arr[i]) {
+            if (arr[idx] == arr[i]) {
                 count++;
             } else {
                 if (count >= M) {
-                    list.add(new int[]{startIdx, i - 1});
+                    list.add(new int[]{idx, count});
                 }
 
-                startIdx = i;
+                idx = i;
                 count = 1;
             }
         }
 
-        if (count >= M) {
-            list.add(new int[]{startIdx, length - 1});
-        }
+        if (count >= M)
+            list.add(new int[]{idx, count});
 
         return list;
     }
@@ -73,7 +74,7 @@ public class Main {
 
             if (list.size() == 0)
                 break;
-
+        
             removeBlock(list);
         }
 
