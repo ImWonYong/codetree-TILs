@@ -25,14 +25,10 @@ public class Main {
 
             while (beExplode()) {
                 bomb();
-                print("bomb");
                 drop();
-                print("drop");
             }
             rotate();
-            print("rotate");
             drop();
-            print("drop");
         }
 
         bomb();
@@ -130,7 +126,7 @@ public class Main {
         for (int j = 0; j < n; j++) {
             int startIdx = n - 1;
             if (board[startIdx][j] == 0) continue;
-            
+
             int count = 1;
 
             for (int i = n - 2; i >= 0; i--) {
