@@ -30,9 +30,11 @@ public class Main {
             rotate();
             drop();
         }
+        while (beExplode()) {
+            bomb();
+            drop();
+        }
 
-        bomb();
-        drop();
 
         int count = 0;
         for (int i = 0; i < n; i++) {
