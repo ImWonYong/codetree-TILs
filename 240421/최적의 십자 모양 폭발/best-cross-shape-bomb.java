@@ -47,7 +47,7 @@ public class Main {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n - 1; j++) {
 
-                if (tempBoard[i][j] != 0 && !colCheck[i][j]) {
+                if (tempBoard[i][j] != 0 && (!colCheck[i][j] || !colCheck[i][j + 1])) {
                     if (tempBoard[i][j] == tempBoard[i][j + 1]) {
                         count++;
                         colCheck[i][j] = true;
@@ -55,7 +55,7 @@ public class Main {
                     }
                 }
 
-                if (tempBoard[j][i] != 0 && !rowCheck[j][i]) {
+                if (tempBoard[j][i] != 0 && (!rowCheck[j][i] || ! rowCheck[j + 1][i])) {
                     if (tempBoard[j][i] == tempBoard[j + 1][i]) {
                         count++;
                         rowCheck[j][i] = true;
@@ -83,7 +83,7 @@ public class Main {
 
         int max = -1;
         for (int i = 0; i < n; i++) {
-            for (int j =0; j < n; j++) {
+            for (int j = 0; j < n; j++) {
                 copyBoard();
                 bomb(i, j);
                 drop();
