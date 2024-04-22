@@ -39,6 +39,7 @@ public class Main {
                     curY = ny;
                     max = board[nx][ny];
                     System.out.print(max + " ");
+                    break;
                 }
             }
 
