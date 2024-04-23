@@ -5,8 +5,9 @@ public class Main {
     public static int x;
     public static int y;
     public static char[][] board;
-    public static boolean[][] checked;
+    public static boolean[][][] checked;
     public static int dir;
+    public static int escapeTime;
 
     public static int[] dx = {0, -1, 0, 1};
     public static int[] dy = {1, 0, -1, 0};
@@ -19,72 +20,62 @@ public class Main {
         y = sc.nextInt() - 1;
 
         board = new char[n][n];
-        checked = new boolean[n][n];
+        checked = new boolean[n][n][4];
         dir = 0;
 
         for (int i = 0; i < n; i++) {
             board[i] = sc.next().toCharArray();
         }
 
-        int count = 0;
-        int timeCount = 0;
-        while (!isEscape(x, y)) {
-            if (timeCount++ >= n * n) {
-                count = -1;
-                break;
-            }
+        do {
+            simulate();
+        } while (isRange(x, y));
 
-            if (checkRightWall(x, y)) {
-                if (isEscape(x + dx[dir], y + dy[dir]) || board[x + dx[dir]][y + dy[dir]] != '#') {
-                    x = x + dx[dir];
-                    y = y + dy[dir];
-                    count++;
-                } else if (board[x + dx[dir]][y + dy[dir]] == '#') {
-                    changeAntiClockwise();
-                }
-            }
-            else {
-                changeClockwise();
-                x = x + dx[dir];
-                y = y + dy[dir];
-                count++;
-            }
-        }
-
-        System.out.println(count);
+        System.out.println(escapeTime);
     }
 
-    public static boolean checkRightWall(int x, int y) {
-        switch (dir) {
-            case 0:
-                return isRange(x + 1, y) && board[x + 1][y] == '#';
-            case 1:
-                return isRange(x, y + 1) && board[x][y + 1] == '#';
-            case 2:
-                return isRange(x - 1, y) && board[x - 1][y] == '#';
-            case 3:
-                return isRange(x, y - 1) && board[x][y - 1] == '#';
+    public static void simulate() {
+
+        if (checked[x][y][dir]) {
+            System.out.println(-1);
+            System.exit(0);
         }
 
-        return false;
+        checked[x][y][dir] = true;
+
+        int nx = x + dx[dir];
+        int ny = y + dy[dir];
+
+        if (wallExist(nx, ny))
+            dir = (dir - 1 + 4) % 4;
+
+        else if (!isRange(nx, ny)) {
+            x = nx;
+            y = ny;
+            escapeTime++;
+        } else {
+            int rx = nx + dx[(dir + 1) % 4];
+            int ry = ny + dy[(dir + 1) % 4];
+
+            if (wallExist(rx, ry)) {
+                x = nx;
+                y = ny;
+                escapeTime++;
+            } else {
+                x = rx;
+                x = ry;
+                dir = (dir + 1) % 4;
+                escapeTime += 2;
+            }
+        }
+    }
+
+    public static boolean wallExist(int x, int y) {
+        return isRange(x, y) && board[x][y] == '#';
     }
 
     public static boolean isRange(int x, int y) {
         return x >= 0 && x < n && y >= 0 && y < n;
-    }
-
-    public static void changeAntiClockwise() {
-        dir++;
-        if (dir == 4) dir = 0;
-    }
-
-    public static void changeClockwise() {
-        dir--;
-        if (dir == -1) dir = 3;
-    }
-
-    public static boolean isEscape(int x, int y) {
-        return x < 0 || x >= n || y < 0 || y >= n;
     }
 }
 
