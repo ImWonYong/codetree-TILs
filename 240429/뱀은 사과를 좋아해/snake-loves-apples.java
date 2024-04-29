@@ -61,22 +61,32 @@ public class Main {
 
             int nr = head.r + dx[d];
             int nc = head.c + dy[d];
-            
-            if (!inRange(nr, nc) || isCrash(nr, nc)) {
-                System.out.println(t);
-                System.exit(0);
+
+            if (!appleBoard[nr][nc]) {
+                Pair tail = snake.removeLast();
+            } else {
+                appleBoard[nr][nc] = false;
             }
 
             snake.addFirst(new Pair(nr, nc));
-            
-            if (!appleBoard[nr][nc])
-                snake.removeLast();
+
+            if (!inRange(nr, nc) || isCrash(nr, nc)) {
+                for (Pair node: snake) {
+                    System.out.println(node.r + " " + node.c);
+                }
+
+
+                System.out.println(t);
+                System.exit(0);
+            }
         }
     }
 
     public static boolean isCrash(int r, int c) {
+        
+        for (int i = 1; i < snake.size(); i++) {
+            Pair node = snake.get(i);
 
-        for (Pair node: snake) {
             if (node.r == r && node.c == c) {
                 return true;
             }
