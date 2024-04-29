@@ -62,6 +62,11 @@ public class Main {
             int nr = head.r + dx[d];
             int nc = head.c + dy[d];
 
+            if (!inRange(nr, nc)) {
+                System.out.println(t);
+                System.exit(0);
+            }
+
             if (!appleBoard[nr][nc]) {
                 Pair tail = snake.removeLast();
             } else {
@@ -70,12 +75,7 @@ public class Main {
 
             snake.addFirst(new Pair(nr, nc));
 
-            if (!inRange(nr, nc) || isCrash(nr, nc)) {
-                for (Pair node: snake) {
-                    System.out.println(node.r + " " + node.c);
-                }
-
-
+            if (isCrash(nr, nc)) {
                 System.out.println(t);
                 System.exit(0);
             }
