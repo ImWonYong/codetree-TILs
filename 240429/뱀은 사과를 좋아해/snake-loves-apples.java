@@ -84,13 +84,15 @@ public class Main {
 
     public static boolean isCrash(int r, int c) {
         
-        for (int i = 1; i < snake.size(); i++) {
-            Pair node = snake.get(i);
+        Pair temp = snake.removeFirst();
 
+        for (Pair node: snake) {
             if (node.r == r && node.c == c) {
                 return true;
             }
         }
+
+        snake.addFirst(temp);
 
         return false;
     }
