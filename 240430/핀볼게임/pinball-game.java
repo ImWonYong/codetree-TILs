@@ -90,7 +90,7 @@ public class Main {
     public static int findDiraction(int r, int c) {
         if (r == 0) {
             return 1;
-        } else if (r == n) {
+        } else if (r == n + 1) {
             return 0;
         } else if (c == 0) {
             return 3;
