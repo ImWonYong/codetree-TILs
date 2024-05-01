@@ -93,7 +93,7 @@ public class Main {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (nextCount[i][j] == 2)
+                if (nextCount[i][j] >= 2)
                     nextCount[i][j] = 0;
                 next[i][j] = nextCount[i][j];
             }
