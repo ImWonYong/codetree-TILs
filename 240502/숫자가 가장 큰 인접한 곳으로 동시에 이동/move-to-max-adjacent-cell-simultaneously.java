@@ -55,9 +55,9 @@ public class Main {
     }
 
     public static void move(int r, int c) {
-        int maxR = r;
-        int maxC = c;
-        int max = board[r][c];
+        int maxR = -1;
+        int maxC = -1;
+        int max = -1;
 
         for (int i = 0; i < 4; i++) {
             int nr = r + dx[i];
@@ -95,6 +95,7 @@ public class Main {
             for (int j = 0; j < n; j++) {
                 if (nextCount[i][j] >= 2)
                     nextCount[i][j] = 0;
+
                 next[i][j] = nextCount[i][j];
             }
         }
