@@ -39,7 +39,7 @@ public class Main {
                 board[r][c] = getDir(d);
             }
 
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 500; i++) {
                 simulate();
             }
 
