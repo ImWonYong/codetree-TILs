@@ -46,9 +46,9 @@ public class Main {
             for (int j = 1; j <= n; j++) {
                 marbles[i][j] = new PriorityQueue<>((m1, m2) -> {
                     if (m1.v == m2.v) {
-                        return Integer.compare(m1.num, m2.num); // v가 같으면 num 오름차순
+                        return Integer.compare(m2.num, m1.num);
                     }
-                    return Integer.compare(m2.v, m1.v); // v에 대해 내림차순
+                    return Integer.compare(m1.v, m2.v);
                 });
             }
         }
@@ -101,9 +101,9 @@ public class Main {
             for (int j = 1; j <= n; j++) {
                 nextMarbles[i][j] = new PriorityQueue<>((m1, m2) -> {
                     if (m1.v == m2.v) {
-                        return Integer.compare(m1.num, m2.num); // v가 같으면 num 오름차순
+                        return Integer.compare(m1.num, m2.num);
                     }
-                    return Integer.compare(m2.v, m1.v); // v에 대해 내림차순
+                    return Integer.compare(m2.v, m1.v);
                 });
             }
         }
