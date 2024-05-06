@@ -13,7 +13,6 @@ public class Main {
 
     public static PriorityQueue<Marble>[][] marbles;
     public static PriorityQueue<Marble>[][] nextMarbles;
-    public static int[][] marbleCount;
 
     public static int[] dx = {-1, 0, 0, 1};
     public static int[] dy = {0, -1, 1, 0};
@@ -40,7 +39,6 @@ public class Main {
 
         marbles = new PriorityQueue[n + 1][n + 1];
         nextMarbles = new PriorityQueue[n + 1][n + 1];
-        marbleCount = new int[n + 1][n + 1];
 
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
@@ -110,7 +108,7 @@ public class Main {
 
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
-                for (int k = 0; k < marbles[i][j].size(); k++) {
+                while (!marbles[i][j].isEmpty()) {
                     move(i, j, marbles[i][j].poll());
                 }
             }
