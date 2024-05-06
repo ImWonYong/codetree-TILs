@@ -46,7 +46,7 @@ public class Main {
             for (int j = 1; j <= n; j++) {
                 marbles[i][j] = new PriorityQueue<>((m1, m2) -> {
                     if (m1.v == m2.v) {
-                        return Integer.compare(m2.num, m1.num);
+                        return Integer.compare(m1.num, m2.num);
                     }
                     return Integer.compare(m1.v, m2.v);
                 });
@@ -101,7 +101,7 @@ public class Main {
             for (int j = 1; j <= n; j++) {
                 nextMarbles[i][j] = new PriorityQueue<>((m1, m2) -> {
                     if (m1.v == m2.v) {
-                        return Integer.compare(m2.num, m1.num);
+                        return Integer.compare(m1.num, m2.num);
                     }
                     return Integer.compare(m1.v, m2.v);
                 });
