@@ -46,14 +46,7 @@ public class Main {
             for (int j = 1; j <= n; j++) {
                 marbles[i][j] = new PriorityQueue<>((m1, m2) -> {
                     if (m1.v > m2.v)
-                        return m1 - m2;
-
-                    return m1.num - m2.num;
-                });
-
-                nextMarbles[i][j] = new PriorityQueue<>((m1, m2) -> {
-                    if (m1.v > m2.v)
-                        return m1 - m2;
+                        return m1.v - m2.v;
 
                     return m1.num - m2.num;
                 });
@@ -64,9 +57,9 @@ public class Main {
             int r = sc.nextInt();
             int c = sc.nextInt();
             int d = mapDirToInt(sc.next().charAt(0));
-            int v = sc.nextInt;
+            int v = sc.nextInt();
 
-            marbles.add(i, d, v);
+            marbles[r][c].add(new Marble(i, d, v));
         }
 
         while (t-- > 0) {
@@ -77,7 +70,7 @@ public class Main {
 
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
-                count += pq.size();
+                count += marbles[i][j].size();
             }
         }
 
@@ -97,7 +90,7 @@ public class Main {
                 PriorityQueue pq = marbles[i][j];
 
                 while (pq.size() > k) {
-                    pq.pop();
+                    pq.poll();
                 }
             }
         }
@@ -108,7 +101,7 @@ public class Main {
             for (int j = 1; j <= n; j++) {
                 nextMarbles[i][j] = new PriorityQueue<>((m1, m2) -> {
                     if (m1.v > m2.v)
-                        return m1 - m2;
+                        return m1.v - m2.v;
 
                     return m1.num - m2.num;
                 });
@@ -117,9 +110,8 @@ public class Main {
 
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
-                for (int k = 0; k < marbles.size(); k++) {
-                    Marble newMarble = move(marbles[i][j].pop());
-                    nextMarbles[i][j].add(newMarble);
+                for (int k = 0; k < marbles[i][j].size(); k++) {
+                    move(i, j, marbles[i][j].poll());
                 }
             }
         }
@@ -131,9 +123,8 @@ public class Main {
         }
     }
 
-    public static Marble move(Marble marble) {
-        int r = marble.r;
-        int c = marble.c;
+    public static void move(int r, int c, Marble marble) {
+        int num = marble.num;
         int d = marble.d;
         int v = marble.v;
 
@@ -153,15 +144,15 @@ public class Main {
             }
         }
 
-        return new Marble(r, c, d, v);
+        nextMarbles[r][c].add(new Marble(num, d, v));
     }
 
     public static boolean inRange(int r, int c) {
-        return r >= 1 && r <= n && c >= 1 && r <= n;
+        return r >= 1 && r <= n && c >= 1 && c <= n;
     }
 
     public static int mapDirToInt(char d) {
-        else if (d == 'U')
+        if (d == 'U')
             return 0;
         else if (d == 'D')
             return 3;
