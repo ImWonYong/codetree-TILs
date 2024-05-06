@@ -45,10 +45,10 @@ public class Main {
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
                 marbles[i][j] = new PriorityQueue<>((m1, m2) -> {
-                    if (m1.v > m2.v)
-                        return m1.v - m2.v;
-
-                    return m1.num - m2.num;
+                    if (m1.v == m2.v) {
+                        return Integer.compare(m1.num, m2.num); // v가 같으면 num 오름차순
+                    }
+                    return Integer.compare(m2.v, m1.v); // v에 대해 내림차순
                 });
             }
         }
@@ -100,10 +100,10 @@ public class Main {
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
                 nextMarbles[i][j] = new PriorityQueue<>((m1, m2) -> {
-                    if (m1.v > m2.v)
-                        return m1.v - m2.v;
-
-                    return m1.num - m2.num;
+                    if (m1.v == m2.v) {
+                        return Integer.compare(m1.num, m2.num); // v가 같으면 num 오름차순
+                    }
+                    return Integer.compare(m2.v, m1.v); // v에 대해 내림차순
                 });
             }
         }
