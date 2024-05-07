@@ -1,191 +1,150 @@
 import java.util.*;
 
-/*
-    구슬은 무게를 가짐
-    2초에 한 칸씩 동일한 속도로 움직임
-    두 개 이상의 구슬이 충돌 시 영향력이 큰 구슬만 하나 남게 됨
-    영향력 = 무게가 가장 크거나 무게가 같은 구슬이 여러개면 구슬의 번호가 가장 클 경우
-    충돌 = 이동하는 도중에 발생할 수 있음
-*/
+class Marble {
+    int x, y, weight, dir, num;
+
+    public Marble(int x, int y, int wieght, int dir, int num) {
+        this.x = x;
+        this.y = y;
+        this.weight = weight;
+        this.dir = dir;
+        this.num = num;
+    }
+}
 
 public class Main {
-    public static int T;
-    public static int n;
+    public static final int BLANK = -1;
+    public static final int ASCII_NUM = 128;
+    public static final int COORD_SIZE = 4000;
+    public static final int OFFSET = 2000;
+    public static final int DIR_NUM = 4;
+
+    public static int t, n;
+
+    public static int[] mapper = new int[ASCII_NUM];
+
+    public static int[] dx = new int[]{0, 1, -1, 0};
+    public static int[] dy = new int[]{1, 0, 0, -1};
+
+    public static int currTime;
+    public static int lastCollisionTime;
+
+    public static ArrayList<Marble> marbles = new ArrayList<>();
+    public static ArrayList<Marble> nextMarbles = new ArrayList<>();
+    public static int[][] nextMarbleIndex = new int[COORD_SIZE + 1][COORD_SIZE + 1];
+
+    public static Marble Move(Marble marble) {
+        int x = marble.x;
+        int y = marble.y;
+        int weight = marble.weight;
+        int dir = marble.dir;
+        int num = marble.num;
+
+        int nx = x + dx[dir], ny = y + dy[dir];
+        return new Marble(nx, ny, weight, dir, num);
+    }
+
+    public static boolean outOfActiveCoordinate(Marble marble) {
+        int x = marble.x;
+        int y = marble.y;
     
-    public static List<Marble> marbles;
+        return x < 0 || x > COORD_SIZE || y < 0 || y > COORD_SIZE;
+    }
 
-    public static int lastCrash;
-    public static int timer;
+    public static int findDuplicateMarble(Marble marble) {
+        int targetX = marble.x;
+        int targetY = marble.y;
+    
+        return nextMarbleIndex[targetX][targetY];
+    }
 
-    public static int[] dx = {0, 0, -1, 1};
-    public static int[] dy = {1, -1, 0, 0};
+    public static Marble Collide(Marble marble1, Marble marble2) {
+        int weight1 = marble1.weight;
+        int num1 = marble1.num;
+    
+        int weight2 = marble2.weight;
+        int num2 = marble2.num;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        if(weight1 > weight2 || (weight1 == weight2 && num1 > num2))
+            return marble1;
+        else
+            return marble2;
+    }
 
-        T = sc.nextInt();
+    public static void pushNextMarble(Marble marble) {
+        if (outOfActiveCoordinate(marble))
+            return;
 
-        while (T-- > 0) {
-            n = sc.nextInt();
+        int index = findDuplicateMarble(marble);
 
-            marbles = new ArrayList<>();
+        if (index == BLANK) {
+            nextMarbles.add(marble);
 
-            for (int i = 0; i < n; i++) {
-                int x = sc.nextInt();
-                int y = sc.nextInt();
-                int w = sc.nextInt();
-                int d = mapToInt(sc.next().charAt(0));
-
-                marbles.add(new Marble(2 * x, 2 * y, w, d, i));
-            }
-
-            lastCrash = -1;
-            timer = 0;
-            while (marbles.size() > 1)
-                simulate();
-
-            System.out.println(lastCrash);
+            int x = marble.x;
+            int y = marble.y;
+            nextMarbleIndex[x][y] = (int) (nextMarbles.size() - 1);
+        } else {
+            Marble newMarble = Collide(nextMarbles.get(index), marble);
+            nextMarbles.set(index, newMarble);
+            lastCollisionTime = currTime;
         }
     }
 
     public static void simulate() {
-        
-        for (int i = 0; i < 2; i++) {
-            timer++;
+        for (int i = 0; i < marbles.size(); i++) {
+            Marble nextMarble = Move(marbles.get(i));
 
-            moveAll();
-
-            if (isCrash())
-                lastCrash = timer;
+            pushNextMarble(nextMarble);
         }
+
+        marbles = (ArrayList<Marble>) nextMarbles.clone();
+
+        for (int i = 0; i < nextMarbles.size(); i++) {
+            int x = nextMarbles.get(i).x;
+            int y = nextMarbles.get(i).y;
+            nextMarbleIndex[x][y] = BLANK;
+        }
+        nextMarbles = new ArrayList<>();
     }
 
-    public static boolean isCrash() {
-        List<Marble> temp = new ArrayList<>();
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        mapper['U'] = 0;
+        mapper['R'] = 1;
+        mapper['L'] = 2;
+        mapper['D'] = 3;
 
-        boolean isCrash = false;
+        t = sc.nextInt();
 
-        while (marbles.size() != 0) {
-            Marble maxMarble = marbles.get(0);
-            int maxX = maxMarble.x;
-            int maxY = maxMarble.y;
-            int maxW = maxMarble.w;
-            int maxD = maxMarble.d;
-            int maxNum = maxMarble.num;
-
-            for (int i = 1; i < marbles.size(); i++) {
-                Marble m = marbles.get(i);
-                
-                if (maxX == m.x && maxY == m.y) {
-                    isCrash = true;
-
-                    if (maxW < m.w) {
-                        maxW = m.w;
-                        maxD = m.d;
-                        maxNum = m.num;
-                    } else if (maxW == m.w && maxNum < m.num) {
-                        maxW = m.w;
-                        maxD = m.d;
-                        maxNum = m.num;
-                    }
-
-                    marbles.remove(m);
-                }
+        for (int i = 0; i <= COORD_SIZE; i++) {
+            for (int j = 0; j <= COORD_SIZE; j++) {
+                nextMarbleIndex[i][j] = BLANK;
             }
-            temp.add(new Marble(maxX, maxY, maxW, maxD, maxNum));
-            marbles.remove(maxMarble);
-        }
-        
-
-        // for (int i = 0; i < marbles.size(); i++) {
-        //     Marble m1 = marbles.get(i);
-        //     int maxW = m1.w;
-        //     int maxD = m1.d;
-        //     int maxNum = m1.num;
-
-        //     PriorityQueue<Marble> pq = new PriorityQueue<>((marble1, marble2) -> {
-        //         if (marble1.w == marble2.w) {
-        //             return marble2.num - marble1.num;
-        //         }
-
-        //         return marble2.w - marble1.w;
-        //     });
-
-        //     pq.add(m1);
-
-        //     for (int j = i + 1; j < marbles.size(); j++) {
-        //         Marble m2 = marbles.get(j);
-
-        //         if (m1.x == m2.x && m1.y == m2.y) {
-        //             pq.add(m2);
-        //         }
-        //     }
-
-        //     Marble maxMarble = pq.poll();
-        //     System.out.println("maxMarble : " + maxMarble.w + " " + maxMarble.num);
-        //     temp.add(maxMarble);
-        // }
-
-        marbles = temp;
-
-        return isCrash;
-    }
-
-    public static void moveAll() {
-        List<Marble> next = new ArrayList<>();
-
-        for (Marble m: marbles) {
-            int x = m.x;
-            int y = m.y;
-            int w = m.w;
-            int d = m.d;
-            int num = m.num;
-
-            int nx = x + dx[d];
-            int ny = y + dy[d];
-
-            if (inRange(nx, ny))
-                next.add(new Marble(nx, ny, w, d, num));
         }
 
-        marbles = next;
+        while (t-- > 0) {
+            marbles = new ArrayList();
+            lastCollisionTime = -1;
 
-        // System.out.println("timer: " + timer);
-        // for (Marble m: marbles) {
-        //     System.out.println(m.x + " " + m.y + " " + m.w + " " + m.num);
-        // }
-        // System.out.println();
-    }
+            n = sc.nextInt();
 
-    public static boolean inRange(int x, int y) {
-        return x >= -2000 && x <= 2000 && y >= -2000 && y <= 2000;
-    }
+            for (int i = 1; i <= n; i++) {
+                int x = sc.nextInt();
+                int y = sc.nextInt();
+                int weight = sc.nextInt();
+                char d = sc.next().charAt(0);                
+            
+                x *= 2; y *= 2;
+                x += OFFSET; y += OFFSET;
+                marbles.add(new Marble(x, y, weight, mapper[d], i));
+            }
 
-    public static int mapToInt(char d) {
-        if (d == 'U')
-            return 0;
-        else if (d == 'D')
-            return 1;
-        else if (d == 'L')
-            return 2;
-        else if (d == 'R')
-            return 3;
-        return -1;
-    }
+            for (int i = 1; i <= COORD_SIZE; i++) {
+                currTime = i;
+                simulate();
+            }
 
-    public static class Marble {
-        int x;
-        int y;
-        int w;
-        int d;
-        int num;
-
-        public Marble(int x, int y, int w, int d, int num) {
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.d = d;
-            this.num = num;
+            System.out.println(lastCollisionTime);
         }
     }
 }
