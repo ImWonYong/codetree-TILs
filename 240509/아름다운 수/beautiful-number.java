@@ -14,10 +14,18 @@ public class Main {
         System.out.println(count);
     }
 
+    public static void printNum() {
+        for (int num: list) {
+            System.out.print(num);
+        }
+        System.out.println();
+    }
+
     public static void recursive(int num) {
         if (num == n) {
-            if (checkPerfectNum())
+            if (checkPerfectNum()) {
                 count++;
+            }
             return;
         }
 
@@ -32,7 +40,7 @@ public class Main {
         boolean isPerfect = true;
 
         int num = list.get(0);
-        int count = 1;
+        int numCount = 1;
 
         if (list.size() == 1) {
             if (num == 1) return true;
@@ -42,16 +50,19 @@ public class Main {
 
         for (int i = 1; i < list.size(); i++) {
             if (num == list.get(i)) {
-                count++;
+                numCount++;
             } else {
-                if (count % num != 0) {
+                if (numCount % num != 0) {
                     isPerfect = false;
                     break;
                 }
                 num = list.get(i);
-                count = 1;
+                numCount = 1;
             }
         }
+
+        if (numCount % num != 0)
+            isPerfect = false;
 
         return isPerfect;
     }
