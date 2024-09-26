@@ -8,5 +8,7 @@ if s1 >= 90:
         print(100000)
     elif s2 >= 90:
         print(50000)
+    else:
+        print(0)
 else:
     print(0)
