@@ -1,13 +1,13 @@
-a = input()
+a = int(input())
 
 arr = input().split()
 
-b = arr[0]
-c = arr[1]
-d = arr[2]
-e = arr[3]
+b = int(arr[0])
+c = int(arr[1])
+d = int(arr[2])
+e = int(arr[3])
 
-print((int)(a > b))
-print((int)(a > c))
-print((int)(a > d))
-print((int)(a > e))
+print(int(a > b))
+print(int(a > c))
+print(int(a > d))
+print(int(a > e))
