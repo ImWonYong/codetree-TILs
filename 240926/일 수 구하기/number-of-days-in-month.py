@@ -11,5 +11,5 @@ if y < 8:
 else:
     if y % 2 == 0:
         print(31)
-    else
+    else:
         print(30)
